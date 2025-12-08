@@ -11,18 +11,12 @@ const Header = () => {
             <Crown fill="#C49A72" className="text-[#C49A72]" />
           </div>
         </Link>
-        <div className="flex gap-2 items-center ml-4">
+        <div className="flex items-center ml-2">
           <Button
             className="text-xs dark:text-neutral-500 text-neutral-600"
             variant="link"
           >
             About
-          </Button>
-          <Button
-            className="text-xs dark:text-neutral-500 text-neutral-600"
-            variant="link"
-          >
-            Contact
           </Button>
         </div>
       </div>
