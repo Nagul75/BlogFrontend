@@ -110,6 +110,13 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.content-truncate-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
