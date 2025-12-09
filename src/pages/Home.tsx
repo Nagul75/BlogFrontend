@@ -1,62 +1,79 @@
 import ImageBanner from "@/components/ImageBanner";
 import Post from "@/components/Post";
 import SearchInput from "@/components/SearchInput";
+import apiClient from "@/utils/apiClient";
+import { useState, useEffect } from "react";
+import { type CompletePost } from "@/types/PostTypes";
+import axios from "axios";
+
+function convertUTCtoReadable(utc: string) {
+  const date = new Date(utc);
+  const day = date.getDay();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) return error.message;
+  if (axios.isAxiosError(error) && error.response?.data?.message) {
+    return error.response.data.message;
+  }
+  return "An unexpected error occurred.";
+};
 
 const Home = () => {
-  const content = `A simple, console-based to-do-list application written in c++. This project demonstrates core c++ principles and file I/O for data persistence.
-## Features
-- **Add, remove and view tasks:** Perform all basic to-do-list operations.
-- **Mark task as complete:** Keep track of your progress.
-- **Persistent storage:** Tasks are saved to tasks.txt and reloaded when application is restarted.
-- **Multi-line descriptions:** Add detailed, multi-line descriptions to your tasks.
-
-## Getting started
-### Prerequisites
-To build and run this project, you will need
-- A C++20 compiler
-- CMake (3.16 or later)
-
-### Building the project
-1. Clone the repositary and navigate to to repo directory
-   
-   git clone https://github.com/Nagul75/todoListManager.git
-   cd todoListManager/
-   
-2. Configure and build with CMake:
-   
-   cmake .
-   make
-   
-3. Run the application
-
-   ./todoListManager`;
+  const [posts, setPost] = useState<CompletePost[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        const response = await apiClient("/posts/");
+        if (response.status == 200) {
+          setPost(response.data);
+          console.log(response);
+          setError(null);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.log(err);
+        const errorMsg = getErrorMessage(err);
+        setError(errorMsg);
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   return (
-    <div className="flex flex-col gap-10 w-full">
+    <div className="flex flex-col gap-10 w-full h-full">
       <div className="flex justify-center items-center">
         <ImageBanner />
       </div>
-      <div className="flex flex-col items-end mb-10 relative w-full">
-        <SearchInput />
-        <Post
-          date_published="25/05/2005"
-          title="Intersectionality of caste and class in India"
-          id="something 213"
-          content={content}
-        />
-        <Post
-          date_published="25/05/2005"
-          title="Intersectionality of caste and class in India"
-          id="something 213"
-          content={content}
-        />
-        <Post
-          date_published="25/05/2005"
-          title="Intersectionality of caste and class in India"
-          id="something 213"
-          content={content}
-        />
-      </div>
+      {!loading ? (
+        <>
+          <div className="flex flex-col items-end mb-10 relative w-full">
+            <SearchInput />
+            {posts &&
+              posts.map((post) => (
+                <Post
+                  title={post.title}
+                  id={post.id}
+                  content={post.content}
+                  date_published={convertUTCtoReadable(post.createdAt)}
+                />
+              ))}
+          </div>
+        </>
+      ) : (
+        <div className="flex justify-center">
+          <h1>Loading</h1>
+        </div>
+      )}
     </div>
   );
 };

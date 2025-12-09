@@ -3,9 +3,9 @@ import Header from "@/components/Header";
 
 const Layout = () => {
   return (
-    <div className="bg-neutral-300 dark:bg-neutral-900 h-full">
+    <div>
       <Header />
-      <div className="flex justify-center">
+      <div className="flex justify-center bg-neutral-300 dark:bg-neutral-900">
         <main className="flex flex-col w-[90%]">
           <Outlet />
         </main>
