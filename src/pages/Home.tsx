@@ -5,14 +5,7 @@ import apiClient from "@/utils/apiClient";
 import { useState, useEffect } from "react";
 import { type CompletePost } from "@/types/PostTypes";
 import axios from "axios";
-
-function convertUTCtoReadable(utc: string) {
-  const date = new Date(utc);
-  const day = date.getDay();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-}
+import convertUTCtoReadable from "@/utils/convertDate";
 
 const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) return error.message;
@@ -62,6 +55,7 @@ const Home = () => {
               posts.map((post) => (
                 <Post
                   title={post.title}
+                  slug={post.slug}
                   id={post.id}
                   content={post.content}
                   date_published={convertUTCtoReadable(post.createdAt)}

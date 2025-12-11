@@ -2,6 +2,7 @@ export interface TruncatedPost {
   id: string;
   title: string;
   content: string;
+  slug: string;
   date_published: string;
 }
 
