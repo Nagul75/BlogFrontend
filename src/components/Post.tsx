@@ -1,7 +1,7 @@
 import { type TruncatedPost } from "@/types/PostTypes";
 import PostCard from "./PostCard";
 
-const Post = ({ title, content, id, date_published }: TruncatedPost) => {
+const Post = ({ title, content, id, date_published, slug }: TruncatedPost) => {
   return (
     <div
       className="flex w-[80%] border-l-6 dark:border-l-[#6E533B] border-l-[#C5A37E] justify-between relative"
@@ -12,8 +12,8 @@ const Post = ({ title, content, id, date_published }: TruncatedPost) => {
           {date_published}
         </p>
       </div>
-      <div className="w-full pl-72 mt-10" key={id}>
-        <PostCard title={title} content={content} />
+      <div className="w-full pl-60 mt-10" key={id}>
+        <PostCard title={title} content={content} slug={slug} />
       </div>
     </div>
   );
