@@ -2,9 +2,7 @@ import apiClient from "./apiClient.ts";
 
 async function testApi() {
   try {
-    const response = await apiClient.get(
-      "/posts/this-is-the-third-posts-ever-in-this-app-isnt-that-cool/",
-    );
+    const response = await apiClient.get("/posts/");
     const comments = await apiClient.get(
       "/posts/this-is-the-third-posts-ever-in-this-app-isnt-that-cool/comments/",
     );
